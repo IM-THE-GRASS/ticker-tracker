@@ -1,96 +1,101 @@
 import reflex as rx
+from reflex_motion import motion
+from ticker_tracker.state import State
+from .components.change_goal_button import change_goal
+from .components.settings import settings
 
-class State(rx.State):
-    tickets:str = "9999"    
-    goal_percent:str = "7.5"
+
+
+
 
 def index():
     return rx.box(
-        rx.text(
-            f"You currently have {State.tickets} tickets!",
-            font_size="8.89vh",
-            font_family="Slackey, sans-serif",
-            color="rgba(123.25, 255, 176.77, 0.94)",
-            text_align="center",
+        
+        
+        # THIS ISA TEXT YEA
+        
+        motion(
+            rx.text(
+                f"You currently have {State.tickets} tickets!",
+                font_size="8.89vh",
+                font_family="Slackey, sans-serif",
+                color="rgba(123.25, 255, 176.77, 0.94)",
+                text_align="center",
+            ),
             position="absolute",
             top="40vh",
             left="-16vw",
             width="132vw",
             height="23vh",
+            while_hover={"scale":1.05, },
+            while_tap={"scale": 1, "rotate":State.tickets_random_rot},
+            transition={"type": "spring", "stiffness": 400, "damping": 17},
         ),
-        rx.image(
-            src="https://cloud-837rvecwy-hack-club-bot.vercel.app/0111851_sp880-airpods-pro-2nd-gen.png",
-            width="12.97vw",
-            height="24.72vh",
-            position="absolute",
-            top="67vh",
-            left="5vw",
-            transform="rotate(4deg)",
-        ),
-        rx.image(
-            src="https://cloud-bscuvqen5-hack-club-bot.vercel.app/045ee3bbe-1519-481a-908e-781f1323a72e-4_f7e8a61e-ae12-4b8d-9c20-68c38709be13.png",
-            width="26vw",
-            height="46h",
-            position="absolute",
-            top="-7vh",
-            left="72vw",
-            transform="rotate(-10deg)",
-        ),
-        rx.text(
-            f"You are {State.goal_percent}% of the way to your goal!",
-            font_size="4.44vh",
-            font_family="Slackey, sans-serif",
-            color="#3DD68C",
-            text_align="center",
+        motion(
+            rx.text(
+                f"You are {State.goal_percent}% of the way to your goal!",
+                font_size="4.44vh",
+                font_family="Slackey, sans-serif",
+                color="#3DD68C",
+                text_align="center",
+            ),
             position="absolute",
             top="51vh",
             left="22vw",
             width="57vw",
             height="12vh",
+            while_hover={"scale":1.05, },
+            while_tap={"scale": 1, "rotate":State.goal_random_rot},
+            transition={"type": "spring", "stiffness": 400, "damping": 17},
         ),
-        rx.button(
-            rx.hstack(
-                rx.box(
-                    rx.icon(
-                        "pencil",
-                        size=30
-                    ),
-                    width="2vw",
-                    height="4vh",
-                ),
-                rx.text(
-                    "Change goal",
-                    color="#F5F5F5",
-                    font_size="4vh",
-                    font_family="Slackey",
-                ),
-                spacing="1vw",
+        
+        
+        
+        
+        # THESE ARE IMAGESZX
+        
+        
+        
+        
+        motion(
+            rx.image(
+                src="https://cloud-837rvecwy-hack-club-bot.vercel.app/0111851_sp880-airpods-pro-2nd-gen.png",
+                transform="rotate(4deg)",
             ),
-            bg="#30A46C",
-            border_radius="0.5vw",
-            padding="2vh",
+            width="13vw",
+            height="25vh",
             position="absolute",
-            top="60vh",
-            left="40vw",
-            width="20vw",
-            height="40px",
+            top="67vh",
+            left="5vw",
+            while_hover={"scale":1.1, "rotate":-4, },
+            while_tap={"scale": 0.9},
+            transition={"type": "spring", "stiffness": 400, "damping": 17},
         ),
-        rx.box(
-            rx.center(
-                rx.icon(
-                    "settings",
-                    size=92, 
-                ),
-                height="100%"
+        motion(
+            rx.image(
+                src="https://cloud-bscuvqen5-hack-club-bot.vercel.app/045ee3bbe-1519-481a-908e-781f1323a72e-4_f7e8a61e-ae12-4b8d-9c20-68c38709be13.png",
+                transform="rotate(-10deg)",
+                height="100%",
+                width="100%"
             ),
-            bg="#30A46C",
-            border_radius="50%",
+            width="20h",
+            height="20h",
             position="absolute",
-            top="1vh",
-            left="1vw",
-            width="40",
-            height="40",
+            top="-7vh",
+            left="72vw",
+            while_hover={"scale":1.05, "rotate":10, },
+            while_tap={"scale": 0.9},
+            transition={"type": "spring", "stiffness": 400, "damping": 17},
         ),
+        
+        
+        
+        
+        change_goal(),
+        settings(),
+        
+        
+        
         overflow="hidden",
         width="100vw",
         height="100vh",
