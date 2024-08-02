@@ -13,34 +13,66 @@ def index():
         # THIS ISA TEXT YEA
         
         motion(
-            rx.text(
-                State.ticket_text,
-                font_size="8vh",
-                font_family="Slackey, sans-serif",
-                color="rgba(123.25, 255, 176.77, 0.94)",
-                text_align="center",
+            rx.center(
+                rx.desktop_only(
+                    rx.text(
+                        State.ticket_text,
+                        font_size="7.5vh",
+                        font_family="Slackey, sans-serif",
+                        color="rgba(123.25, 255, 176.77, 0.94)",
+                        text_align="center",
+                    ),
+                ),
+                rx.mobile_and_tablet(
+                    rx.text(
+                        State.ticket_text,
+                        font_size="5vh",
+                        font_family="Slackey, sans-serif",
+                        color="rgba(123.25, 255, 176.77, 0.94)",
+                        text_align="center",
+                        padding_bottom="20vh"
+                    ),
+                ),
+                width="100%"
             ),
+            
+            
             position="absolute",
-            top="40vh",
-            left="-16vw",
-            width="132vw",
+            top="35vh",
+            width="100%",
             height="23vh",
             while_hover={"scale":1.05, },
             while_tap={"scale": 1, "rotate":State.tickets_random_rot},
             transition={"type": "spring", "stiffness": 400, "damping": 17},
         ),
         motion(
-            rx.text(
-                f"You are {State.goal_percent}% of the way to your goal!",
-                font_size="4.44vh",
-                font_family="Slackey, sans-serif",
-                color="#3DD68C",
-                text_align="center",
+            rx.center(
+                rx.mobile_and_tablet(
+                    rx.text(
+                        f"{State.goal_percent}% to your goal!",
+                        font_size="4.44vh",
+                        font_family="Slackey, sans-serif",
+                        color="#3DD68C",
+                        text_align="center",
+                        text_wrap="nowrap"
+                    ),
+                ),
+                rx.desktop_only(
+                    rx.text(
+                        f"You are {State.goal_percent}% of the way to your goal!",
+                        font_size="4.44vh",
+                        font_family="Slackey, sans-serif",
+                        color="#3DD68C",
+                        text_align="center",
+                    ),
+                ),
+                width="100%",
             ),
+            
+            
             position="absolute",
             top="51vh",
-            left="22vw",
-            width="57vw",
+            width="100%",
             height="12vh",
             while_hover={"scale":1.05, },
             while_tap={"scale": 1, "rotate":State.goal_random_rot},
@@ -54,42 +86,44 @@ def index():
         
         
         
-        
-        motion(
-            rx.image(
-                src="https://cloud-837rvecwy-hack-club-bot.vercel.app/0111851_sp880-airpods-pro-2nd-gen.png",
-                transform="rotate(4deg)",
-            ),
-            width="13vw",
-            height="25vh",
-            position="absolute",
-            top="67vh",
-            left="5vw",
-            while_hover={"scale":1.1, "rotate":-4, },
-            while_tap={"scale": 0.9},
-            transition={"type": "spring", "stiffness": 400, "damping": 17},
-        ),
-        motion(
-            rx.center(
+        rx.desktop_only(
+            motion(
                 rx.image(
-                    src="https://cloud-9zwbzfbtw-hack-club-bot.vercel.app/00image_from_ios-removebg-preview.png",
-                    transform="rotate(-10deg)",
-                    #width="19.5vw",
-                    #height="37.5vh",
+                    src="https://cloud-837rvecwy-hack-club-bot.vercel.app/0111851_sp880-airpods-pro-2nd-gen.png",
+                    transform="rotate(4deg)",
                 ),
-                width="100%",
-                height="100%"
+                width="13vw",
+                height="25vh",
+                position="absolute",
+                top="67vh",
+                left="5vw",
+                while_hover={"scale":1.1, "rotate":-4, },
+                while_tap={"scale": 0.9},
+                transition={"type": "spring", "stiffness": 400, "damping": 17},
             ),
-            
-            width="19.5vw",
-            height="37.5vh",
-            position="absolute",
-            top="0vh",
-            left="72vw",
-            while_hover={"scale":1.05, "rotate":10, },
-            while_tap={"scale": 0.9},
-            transition={"type": "spring", "stiffness": 400, "damping": 17},
+            motion(
+                rx.center(
+                    rx.image(
+                        src="https://cloud-9zwbzfbtw-hack-club-bot.vercel.app/00image_from_ios-removebg-preview.png",
+                        transform="rotate(-10deg)",
+                        #width="19.5vw",
+                        #height="37.5vh",
+                    ),
+                    width="100%",
+                    height="100%"
+                ),
+                
+                width="19.5vw",
+                height="37.5vh",
+                position="absolute",
+                top="0vh",
+                left="72vw",
+                while_hover={"scale":1.05, "rotate":10, },
+                while_tap={"scale": 0.9},
+                transition={"type": "spring", "stiffness": 400, "damping": 17},
+            ),
         ),
+        
         
         
         
