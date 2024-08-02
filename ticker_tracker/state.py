@@ -42,10 +42,6 @@ class State(rx.State):
         data = json.loads(response.text)
         for item in data:
             try:
-                item.pop("description")
-            except:
-                pass
-            try:
                 item.pop("smallName")
             except:
                 pass

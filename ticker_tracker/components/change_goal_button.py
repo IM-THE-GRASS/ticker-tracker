@@ -70,29 +70,118 @@ def button():
     )
     
     
-def goal_card(i):
-    return rx.box(
-        rx.card(
+def goal_card(info):
+    return rx.dialog.root(
+        rx.dialog.trigger(
+            rx.card(
+                rx.text(
+                    info["name"],
+                    as_="div",
+                    size="6",
+                    margin_bottom="4px",
+                    weight="bold",
+                    color_scheme="green"
+                ),
+                rx.center(
+                    rx.image(
+                        src=f"{info['imageURL']}",
+                        max_height="65%",
+                    ),
+                    width="100%",
+                    height="100%"
+                ),
+                
+                height="40vh",
+                width = "100%"
+            ),
+        ),
+        rx.dialog.content(
             rx.text(
-                i["name"],
+                f"Would you like to set your goal to {info['name']} for {info['tickets']} tickets?",
                 as_="div",
                 size="6",
                 margin_bottom="4px",
                 weight="bold",
                 color_scheme="green"
             ),
-            rx.center(
+            rx.hstack(
                 rx.image(
-                    src=f"{i['imageURL']}",
-                    max_height="65%",
+                    src=f"{info['imageURL']}",
+                    max_height = "40vh",
+                    max_width= "80%"
                 ),
-                width="100%",
+                rx.vstack(
+                    rx.text(
+                        f"{info['name']:}",
+                        as_="div",
+                        size="6",
+                        margin_bottom="4px",
+                        weight="bold",
+                        color_scheme="green"
+                    ),
+                    rx.cond(
+                        info.contains("description"),
+                        rx.text(
+                            f"{info['description']}",
+                            as_="div",
+                            size="3",
+                            margin_bottom="4px",
+                            weight="bold",
+                            color_scheme="green"
+                        ),
+                        rx.box(),
+                    ),
+                    rx.text(
+                        f"{info['tickets']:} tickets",
+                        as_="div",
+                        size="8",
+                        margin_bottom="4px",
+                        weight="bold",
+                        color_scheme="green"
+                    ),
+                    # rx.box(
+                    #     rx.text(
+                    #         "AAA",
+                    #         position="absolute",
+                    #         bottom="0",
+                    #         left="0"
+                    #     ), 
+                    # ),
+                    
+                    
+                    rx.box(
+                        height="100%"
+                    ),
+                    
+                    height="100%"
+                ),
+                
+                overflow="hidden",
                 height="100%"
+                
+            ),
+            rx.flex(
+                rx.dialog.close(
+                    rx.button(
+                        "Cancel",
+                        color_scheme="gray",
+                        variant="soft",
+                    ),
+                ),
+                rx.dialog.close(
+                    rx.button(
+                        "Save",
+                        color_scheme="green",
+                        on_click=State.update
+                    ),
+                    
+                ),
+                spacing="3",
+                margin_top="16px",
+                justify="end",
             ),
             
-            height="40vh",
-            width = "100%"
-        ),
+        )
         
     )
 def change_goal():
