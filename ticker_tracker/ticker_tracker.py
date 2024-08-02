@@ -16,8 +16,8 @@ def index():
         
         motion(
             rx.text(
-                f"You currently have {State.tickets} tickets!",
-                font_size="8.89vh",
+                State.tickert_text,
+                font_size="8vh",
                 font_family="Slackey, sans-serif",
                 color="rgba(123.25, 255, 176.77, 0.94)",
                 text_align="center",
@@ -72,16 +72,21 @@ def index():
             transition={"type": "spring", "stiffness": 400, "damping": 17},
         ),
         motion(
-            rx.image(
-                src="https://cloud-bscuvqen5-hack-club-bot.vercel.app/045ee3bbe-1519-481a-908e-781f1323a72e-4_f7e8a61e-ae12-4b8d-9c20-68c38709be13.png",
-                transform="rotate(-10deg)",
-                height="100%",
-                width="100%"
+            rx.center(
+                rx.image(
+                    src="https://cloud-9zwbzfbtw-hack-club-bot.vercel.app/00image_from_ios-removebg-preview.png",
+                    transform="rotate(-10deg)",
+                    #width="19.5vw",
+                    #height="37.5vh",
+                ),
+                width="100%",
+                height="100%"
             ),
-            width="20h",
-            height="20h",
+            
+            width="19.5vw",
+            height="37.5vh",
             position="absolute",
-            top="-7vh",
+            top="0vh",
             left="72vw",
             while_hover={"scale":1.05, "rotate":10, },
             while_tap={"scale": 0.9},
