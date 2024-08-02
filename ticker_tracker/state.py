@@ -20,7 +20,7 @@ class State(rx.State):
         input_url = input_url.replace("/", '')
         return input_url
         
-    def get_balance(self, id:str):
+    def get_balance(self, id:str, ints = False):
         try:
             response = requests.get(f"https://hackclub.com/arcade/" + id + "/shop/")
             print("huh")
@@ -30,16 +30,23 @@ class State(rx.State):
             balance_text = balance_span.text
             balance_text = balance_text.replace("Your current balance is ", "")
             balance_text = balance_text.replace(" 🎟️", "")
-            balance_text = f"You currently have {balance_text} tickets!"
+            if not ints:
+                balance_text = f"You currently have {balance_text} tickets!"
+            else:
+                balance_text = int(balance_text)
             print(balance_text)
             return balance_text
         except:
-            return "Please set your shop URL in the settings!"    
+            if not ints:
+                return "Please set your shop URL in the settings!"  
+            else:
+                return 0  
     
     
     def get_shop_info():
         response = requests.get("https://hackclub.com/api/arcade/shop/")
         data = json.loads(response.text)
+        newdata={}
         for item in data:
             try:
                 item.pop("smallName")
@@ -49,21 +56,48 @@ class State(rx.State):
             tickets = item["hours"]
             item.pop("hours")
             item["tickets"] = str(tickets)
-            print(item)
-        return data
+            newdata[item["name"]] = item
+        print(newdata)
+        return newdata
     
-    shop_data:list[dict[str,str]] = get_shop_info()
-    shop_url_cookie:str = rx.Cookie(name="shopurl")
+    shop_data:dict[str, dict[str,str]] = get_shop_info()
+    shop_url_cookie:str = rx.Cookie(name="shopurl", secure= True, same_site="strict")
     shop_url:str
     shop_id:str
     
-    tickets:str = "9999"    
+        
+    goal_name:str
+    goal_price:str   
+    current_goal_choice:dict
+    goal_cookie:str = rx.Cookie(name="goal")    
+    has_goal:bool
     goal_percent:str = "7.5"
+    def get_goal_percent(self):
+        tickets = self.get_balance(self.shop_url_cookie, ints=True)
+        goal = int(self.goal_price)
+        return str(100 * float(tickets)/float(goal))
+    def get_goal_name(self):
+        datar =  self.goal_cookie
+        return datar
+    def get_goal_price(self):
+        info = self.shop_data[self.goal_cookie]
+        return info['tickets']
+    def check_has_goal(self):
+        if self.goal_cookie in self.shop_data:
+            print(self.goal_cookie)
+            print(self.shop_data[self.goal_cookie])
+            self.has_goal = True
+        else:
+            self.has_goal = False
+    
+    
+    
     
     ticket_text:str = get_balance(None, shop_url_cookie)
     
     
     
+        
     
     
     
@@ -73,13 +107,26 @@ class State(rx.State):
         self.shop_url = new_text
     def update_ticket_text(self):
         self.ticket_text = self.get_balance(self.shop_url_cookie)
+        self.goal_price = self.get_goal_price()
+        self.goal_name = self.get_goal_name()
+        self.has_goal = self.check_has_goal()
+        self.goal_percent = self.get_goal_percent()
+        print(self.goal_price)
     def update(self):
         self.shop_url_cookie = self.strip_url(self.shop_url)
         self.update_ticket_text()
     
     
     
-        
+    def set_goal(self, info):
+        print(info)
+        self.goal_cookie = info[0]
+        #self.goal_cookie = self.current_goal_choice
+    def choose_goal(self, *args):
+        print("ared", args)
+        pass
+        #self.current_goal_choice = info
+    
         
     
     

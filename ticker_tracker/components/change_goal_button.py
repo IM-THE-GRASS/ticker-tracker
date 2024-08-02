@@ -75,7 +75,7 @@ def goal_card(info):
         rx.dialog.trigger(
             rx.card(
                 rx.text(
-                    info["name"],
+                    info[0],
                     as_="div",
                     size="6",
                     margin_bottom="4px",
@@ -84,7 +84,7 @@ def goal_card(info):
                 ),
                 rx.center(
                     rx.image(
-                        src=f"{info['imageURL']}",
+                        src=f"{info[1]['imageURL']}",
                         max_height="65%",
                     ),
                     width="100%",
@@ -97,22 +97,22 @@ def goal_card(info):
         ),
         rx.dialog.content(
             rx.text(
-                f"Would you like to set your goal to {info['name']} for {info['tickets']} tickets?",
+                f"Would you like to set your goal to {info[0]} for {info[1]['tickets']} tickets?",
                 as_="div",
                 size="6",
                 margin_bottom="4px",
                 weight="bold",
-                color_scheme="green"
+                color_scheme="green",
             ),
             rx.hstack(
                 rx.image(
-                    src=f"{info['imageURL']}",
+                    src=f"{info[1]['imageURL']}",
                     max_height = "40vh",
                     max_width= "80%"
                 ),
                 rx.vstack(
                     rx.text(
-                        f"{info['name']:}",
+                        f"{info[0]:}",
                         as_="div",
                         size="6",
                         margin_bottom="4px",
@@ -120,9 +120,9 @@ def goal_card(info):
                         color_scheme="green"
                     ),
                     rx.cond(
-                        info.contains("description"),
+                        info[1].contains("description"),
                         rx.text(
-                            f"{info['description']}",
+                            f"{info[1]['description']}",
                             as_="div",
                             size="3",
                             margin_bottom="4px",
@@ -132,7 +132,7 @@ def goal_card(info):
                         rx.box(),
                     ),
                     rx.text(
-                        f"{info['tickets']:} tickets",
+                        f"{info[1]['tickets']:} tickets",
                         as_="div",
                         size="8",
                         margin_bottom="4px",
@@ -172,7 +172,7 @@ def goal_card(info):
                     rx.button(
                         "Save",
                         color_scheme="green",
-                        on_click=State.update
+                        on_click=lambda: State.set_goal(info)
                     ),
                     
                 ),
