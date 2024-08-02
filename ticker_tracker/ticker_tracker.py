@@ -5,9 +5,7 @@ from .components.change_goal_button import change_goal
 from .components.settings import settings
 
 
-
-
-
+@rx.page(on_load=State.update_ticket_text)
 def index():
     return rx.box(
         
@@ -16,7 +14,7 @@ def index():
         
         motion(
             rx.text(
-                State.tickert_text,
+                State.ticket_text,
                 font_size="8vh",
                 font_family="Slackey, sans-serif",
                 color="rgba(123.25, 255, 176.77, 0.94)",
@@ -105,6 +103,7 @@ def index():
         width="100vw",
         height="100vh",
         position="relative",
+        
     )
 
 app = rx.App(
