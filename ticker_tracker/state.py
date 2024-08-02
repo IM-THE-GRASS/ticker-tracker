@@ -6,7 +6,8 @@ from bs4 import BeautifulSoup
 
 
 class State(rx.State):
-    user_shop_url:str = rx.Cookie(name="shopurl",secure=True,same_site="strict")
+    shop_url_cookie:str = rx.Cookie(name="shopurl")
+    shop_url:str
     tickets:str = "9999"    
     goal_percent:str = "7.5"
     goal_random_rot = randrange(-3, 0)
@@ -14,7 +15,13 @@ class State(rx.State):
     
     
     def set_shop_url(self, new_text):
-        self.user_shop_url = new_text
+        self.shop_url_cookie = self.shop_url
+        print(self.shop_url_cookie)
+        
+    def update(self):
+        self.shop_url_cookie = rx.Cookie(name="shopurl")
+        self.shop_url_cookie = self.shop_url
+        
         
     
     def get_balance(url):
@@ -26,5 +33,5 @@ class State(rx.State):
             return balance_text
         except:
             return "Please set your shop URL in the settings!"
-    tickert_text = get_balance(user_shop_url)
+    tickert_text = get_balance(shop_url_cookie)
     

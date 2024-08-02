@@ -1,5 +1,6 @@
 from reflex_motion import motion
 import reflex as rx
+from ticker_tracker.state import State
 
 def settings():
     return rx.dialog.root(
@@ -44,7 +45,9 @@ def settings():
                 ),
                 rx.input(
                     placeholder="Enter your shop URL you get when you use the \"/shop\" command in the Hack Club Slack.",
-                    color_scheme="green"
+                    color_scheme="green",
+                    value=State.shop_url,
+                    on_change= State.set_shop_url
                 ),
                 rx.text(
                     "Disclaimer: This info is not saved on any server and is stored on your local machine. Nobody else can see your ticket count.",
@@ -68,8 +71,8 @@ def settings():
                 rx.dialog.close(
                     rx.button(
                         "Save",
-                        color_scheme="green"
-                        
+                        color_scheme="green",
+                        on_click=State.update
                     ),
                     
                 ),
