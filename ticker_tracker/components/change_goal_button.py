@@ -1,6 +1,7 @@
 import reflex as rx
+from ticker_tracker.state import State
 
-def change_goal():
+def button():
     return rx.box(
         rx.desktop_only(
             rx.button(
@@ -67,3 +68,89 @@ def change_goal():
             
         )
     )
+    
+    
+def goal_card(i):
+    return rx.box(
+        rx.card(
+            rx.text(
+                i["name"],
+                as_="div",
+                size="6",
+                margin_bottom="4px",
+                weight="bold",
+                color_scheme="green"
+            ),
+            rx.center(
+                rx.image(
+                    src=f"{i['imageURL']}",
+                    max_height="65%",
+                ),
+                width="100%",
+                height="100%"
+            ),
+            
+            height="40vh",
+            width = "100%"
+        ),
+        
+    )
+def change_goal():
+    return rx.dialog.root(
+        rx.dialog.trigger(
+            button()
+        ),
+        rx.dialog.content(
+            rx.flex(
+                rx.text(
+                    "Edit Goal",
+                    as_="div",
+                    size="6",
+                    margin_bottom="4px",
+                    weight="bold",
+                    color_scheme="green"
+                ),
+                rx.scroll_area(
+                    rx.grid(
+                        rx.foreach(
+                            State.shop_data,
+                            goal_card,
+                        ),
+                        columns="3",
+                        spacing="4",
+                        width="100%",
+                    ),
+                    height="60vh"
+                ),
+                direction="column",
+                spacing="3",
+            ),
+            rx.flex(
+                rx.dialog.close(
+                    rx.button(
+                        "Cancel",
+                        color_scheme="gray",
+                        variant="soft",
+                    ),
+                ),
+                rx.dialog.close(
+                    rx.button(
+                        "Save",
+                        color_scheme="green",
+                        on_click=State.update
+                    ),
+                    
+                ),
+                spacing="3",
+                margin_top="16px",
+                justify="end",
+            ),
+        ),
+    )
+
+
+
+
+
+
+    

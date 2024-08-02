@@ -2,13 +2,12 @@ from random import randrange
 import reflex as rx
 import requests
 from bs4 import BeautifulSoup
-
+import json
 
 
 class State(rx.State):
     goal_random_rot = randrange(-3, 0)
     tickets_random_rot = randrange(0, 3)
-    
     
         
     
@@ -38,13 +37,29 @@ class State(rx.State):
             return "Please set your shop URL in the settings!"    
     
     
+    def get_shop_info():
+        response = requests.get("https://hackclub.com/api/arcade/shop/")
+        data = json.loads(response.text)
+        for item in data:
+            try:
+                item.pop("description")
+            except:
+                pass
+            try:
+                item.pop("smallName")
+            except:
+                pass
+            item.pop("stock")
+            tickets = item["hours"]
+            item.pop("hours")
+            item["tickets"] = str(tickets)
+            print(item)
+        return data
     
-    
-    
+    shop_data:list[dict[str,str]] = get_shop_info()
     shop_url_cookie:str = rx.Cookie(name="shopurl")
     shop_url:str
     shop_id:str
-    
     
     tickets:str = "9999"    
     goal_percent:str = "7.5"
