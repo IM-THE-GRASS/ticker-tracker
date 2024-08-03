@@ -1,4 +1,5 @@
 import reflex as rx
+from reflex_motion import motion
 from ticker_tracker.state import State
 
 def button():
@@ -73,27 +74,40 @@ def button():
 def goal_card(info):
     return rx.dialog.root(
         rx.dialog.trigger(
-            rx.card(
-                rx.text(
-                    info[0],
-                    as_="div",
-                    size="6",
-                    margin_bottom="4px",
-                    weight="bold",
-                    color_scheme="green"
-                ),
-                rx.center(
-                    rx.image(
-                        src=f"{info[1]['imageURL']}",
-                        max_height="65%",
+            motion(
+                rx.card(
+                    rx.text(
+                        info[0],
+                        as_="div",
+                        size="6",
+                        margin_bottom="4px",
+                        weight="bold",
+                        color_scheme="green"
                     ),
-                    width="100%",
-                    height="100%"
+                    
+                    rx.center(
+                        motion(
+                            rx.image(
+                                src=f"{info[1]['imageURL']}",
+                                max_height="65%",
+                                transform = "rotate(-10deg)"
+                            ),
+                            width="100%",
+                            height="100%",
+                            while_hover={"scale":1.05, "rotate":10},
+                            while_tap={"scale": 0.9},
+                            transition={"type": "spring", "stiffness": 400, "damping": 17},
+                        )
+                    ),
+                    height="40vh",
+                    width = "100%"
                 ),
                 
-                height="40vh",
-                width = "100%"
+                while_hover={"scale":1.05},
+                while_tap={"scale": 0.9},
+                transition={"type": "spring", "stiffness": 400, "damping": 17},
             ),
+            
         ),
         rx.dialog.content(
             rx.text(
@@ -209,7 +223,8 @@ def change_goal():
                         spacing="4",
                         width="100%",
                     ),
-                    height="60vh"
+                    height="60vh",
+                    scrollbars="vertical"
                 ),
                 direction="column",
                 spacing="3",
@@ -226,7 +241,6 @@ def change_goal():
                     rx.button(
                         "Save",
                         color_scheme="green",
-                        on_click=State.update
                     ),
                     
                 ),

@@ -1,4 +1,5 @@
 from random import randrange
+import random
 import reflex as rx
 import requests
 from bs4 import BeautifulSoup
@@ -65,30 +66,36 @@ class State(rx.State):
     shop_url:str
     shop_id:str
     
+    
+    
         
     goal_name:str
     goal_price:str   
     current_goal_choice:dict
     goal_cookie:str = rx.Cookie(name="goal")    
-    has_goal:bool
+    has_goal:bool = True
     goal_percent:str = "7.5"
-    def get_goal_percent(self):
+    def get_goal_price(self):
+        info = self.shop_data[self.goal_cookie]
+        print(self.goal_cookie)
+        return info['tickets']
+    def get_goal_info(self, full = False):
         tickets = self.get_balance(self.shop_url_cookie, ints=True)
-        goal = int(self.goal_price)
-        return str(100 * float(tickets)/float(goal))
+        goal = int(self.get_goal_price())
+        if not full:
+            return str(round(100 * float(tickets)/float(goal)))
     def get_goal_name(self):
         datar =  self.goal_cookie
         return datar
-    def get_goal_price(self):
-        info = self.shop_data[self.goal_cookie]
-        return info['tickets']
+    
     def check_has_goal(self):
         if self.goal_cookie in self.shop_data:
             print(self.goal_cookie)
             print(self.shop_data[self.goal_cookie])
-            self.has_goal = True
+            return True
         else:
-            self.has_goal = False
+            return False
+        print(self.has_goal, "AA")
     
     
     
@@ -107,25 +114,34 @@ class State(rx.State):
         self.shop_url = new_text
     def update_ticket_text(self):
         self.ticket_text = self.get_balance(self.shop_url_cookie)
-        self.goal_price = self.get_goal_price()
         self.goal_name = self.get_goal_name()
         self.has_goal = self.check_has_goal()
-        self.goal_percent = self.get_goal_percent()
-        print(self.goal_price)
+        self.goal_percent = self.get_goal_info()
     def update(self):
         self.shop_url_cookie = self.strip_url(self.shop_url)
         self.update_ticket_text()
     
-    
+    def get_random_img(self):
+        data = self.shop_data
+        print(random.choice(list(data.values()))['imageURL'], "AAAAA")
+        return random.choice(list(data.values()))['imageURL']
+    random_img_1:str
+    random_img_2:str
+    def on_load(self):
+        self.random_img_1 = self.get_random_img()
+        self.random_img_2 = self.get_random_img()
+        self.update_ticket_text()
     
     def set_goal(self, info):
         print(info)
         self.goal_cookie = info[0]
+        self.update_ticket_text()
         #self.goal_cookie = self.current_goal_choice
     def choose_goal(self, *args):
         print("ared", args)
         pass
         #self.current_goal_choice = info
+    
     
         
     

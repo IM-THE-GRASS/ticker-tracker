@@ -5,7 +5,7 @@ from .components.change_goal_button import change_goal
 from .components.settings import settings
 
 
-@rx.page(on_load=State.update_ticket_text)
+#@rx.page(on_load=State.on_load)
 def index():
     return rx.box(
         
@@ -21,6 +21,8 @@ def index():
                         font_family="Slackey, sans-serif",
                         color="rgba(123.25, 255, 176.77, 0.94)",
                         text_align="center",
+                        z_index = "9999",
+                        position="relative"
                     ),
                 ),
                 rx.mobile_and_tablet(
@@ -30,7 +32,8 @@ def index():
                         font_family="Slackey, sans-serif",
                         color="rgba(123.25, 255, 176.77, 0.94)",
                         text_align="center",
-                        padding_bottom="20vh"
+                        padding_bottom="20vh",
+                        z_index = "20"
                     ),
                 ),
                 width="100%"
@@ -47,25 +50,34 @@ def index():
         ),
         motion(
             rx.center(
-                rx.mobile_and_tablet(
-                    rx.text(
-                        f"{State.goal_percent}% to your goal!",
-                        font_size="4.44vh",
-                        font_family="Slackey, sans-serif",
-                        color="#3DD68C",
-                        text_align="center",
-                        text_wrap="nowrap"
+                rx.cond(
+                    State.has_goal,
+                    rx.box(
+                        rx.mobile_and_tablet(
+                            rx.text(
+                                f"{State.goal_percent}% to the {State.goal_name}!",
+                                font_size="4.44vh",
+                                font_family="Slackey, sans-serif",
+                                color="#3DD68C",
+                                text_align="center",
+                                text_wrap="nowrap"
+                            ),
+                        ),
+                        rx.desktop_only(
+                            
+                            rx.text(
+                                f"You are {State.goal_percent}% to the {State.goal_name}!",
+                                
+                                font_size="4.44vh",
+                                font_family="Slackey, sans-serif",
+                                color="#3DD68C",
+                                text_align="center",
+                            ),
+                        ),
                     ),
+                    rx.box()
                 ),
-                rx.desktop_only(
-                    rx.text(
-                        f"You are {State.goal_percent}% of the way to your goal!",
-                        font_size="4.44vh",
-                        font_family="Slackey, sans-serif",
-                        color="#3DD68C",
-                        text_align="center",
-                    ),
-                ),
+                
                 width="100%",
             ),
             
@@ -89,11 +101,12 @@ def index():
         rx.desktop_only(
             motion(
                 rx.image(
-                    src="https://cloud-837rvecwy-hack-club-bot.vercel.app/0111851_sp880-airpods-pro-2nd-gen.png",
+                    #src="https://cloud-837rvecwy-hack-club-bot.vercel.app/0111851_sp880-airpods-pro-2nd-gen.png",
+                    src=State.random_img_2,
                     transform="rotate(4deg)",
                 ),
-                width="13vw",
-                height="25vh",
+                width="19.5vw",
+                height="37vh",
                 position="absolute",
                 top="67vh",
                 left="5vw",
@@ -104,10 +117,11 @@ def index():
             motion(
                 rx.center(
                     rx.image(
-                        src="https://cloud-9zwbzfbtw-hack-club-bot.vercel.app/00image_from_ios-removebg-preview.png",
+                        src=State.random_img_1,
                         transform="rotate(-10deg)",
                         #width="19.5vw",
                         #height="37.5vh",
+                        on_mount=State.on_load
                     ),
                     width="100%",
                     height="100%"
