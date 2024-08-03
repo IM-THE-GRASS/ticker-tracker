@@ -6,27 +6,33 @@ def button():
     return rx.box(
         rx.desktop_only(
             rx.button(
-                rx.hstack(
-                    rx.center(
-                        rx.icon(
-                            "pencil",
-                            size=30
+                motion(
+                    rx.hstack(
+                        rx.center(
+                            rx.icon(
+                                "pencil",
+                                size=30
+                            ),
+                            width="2vw",
+                            height="100%",
                         ),
-                        width="2vw",
-                        height="100%",
-                    ),
-                    rx.center(
-                        rx.text(
-                            "Change goal",
-                            color="#F5F5F5",
-                            font_size="4vh",
-                            font_family="Slackey",
-                            text_wrap="nowrap",
+                        rx.center(
+                            rx.text(
+                                "Change goal",
+                                color="#F5F5F5",
+                                font_size="4vh",
+                                font_family="Slackey",
+                                text_wrap="nowrap",
+                            ),
+                            height="100%",
                         ),
-                        height="100%",
+                        spacing="1vw",
+                        height="100%"
                     ),
-                    spacing="1vw",
-                    height="100%"
+                    while_hover={"scale":1.05},
+                    while_tap={"scale": 0.9},
+                    transition={"type": "spring", "stiffness": 400, "damping": 17},
+                    
                 ),
                 bg="#30A46C",
                 border_radius="0.5vw",
@@ -99,7 +105,7 @@ def goal_card(info):
                             transition={"type": "spring", "stiffness": 400, "damping": 17},
                         )
                     ),
-                    height="40vh",
+                    height="35vh",
                     width = "100%"
                 ),
                 
@@ -169,7 +175,7 @@ def goal_card(info):
                     
                     height="100%"
                 ),
-                
+                width = "40vw",
                 overflow="hidden",
                 height="100%"
                 
@@ -201,7 +207,7 @@ def goal_card(info):
 def change_goal():
     return rx.dialog.root(
         rx.dialog.trigger(
-            button()
+            button(),
         ),
         rx.dialog.content(
             rx.flex(

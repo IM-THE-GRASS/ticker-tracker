@@ -24,8 +24,6 @@ class State(rx.State):
     def get_balance(self, id:str, ints = False):
         try:
             response = requests.get(f"https://hackclub.com/arcade/" + id + "/shop/")
-            print("huh")
-            print(response.url)
             soup = BeautifulSoup(response.text, 'html.parser')
             balance_span = soup.find('span', class_='gaegu css-3ha5y3')
             balance_text = balance_span.text
@@ -35,7 +33,6 @@ class State(rx.State):
                 balance_text = f"You currently have {balance_text} tickets!"
             else:
                 balance_text = int(balance_text)
-            print(balance_text)
             return balance_text
         except:
             if not ints:
@@ -58,7 +55,6 @@ class State(rx.State):
             item.pop("hours")
             item["tickets"] = str(tickets)
             newdata[item["name"]] = item
-        print(newdata)
         return newdata
     
     shop_data:dict[str, dict[str,str]] = get_shop_info()
@@ -68,34 +64,45 @@ class State(rx.State):
     
     
     
-        
+    goal_img:str
     goal_name:str
     goal_price:str   
     current_goal_choice:dict
     goal_cookie:str = rx.Cookie(name="goal")    
     has_goal:bool = True
     goal_percent:str = "7.5"
-    def get_goal_price(self):
-        info = self.shop_data[self.goal_cookie]
-        print(self.goal_cookie)
-        return info['tickets']
     def get_goal_info(self, full = False):
         tickets = self.get_balance(self.shop_url_cookie, ints=True)
-        goal = int(self.get_goal_price())
+        goal = int(self.goal_price)
         if not full:
             return str(round(100 * float(tickets)/float(goal)))
     def get_goal_name(self):
         datar =  self.goal_cookie
         return datar
-    
+    def get_goal_img(self):
+        try:
+            info = self.shop_data[self.goal_cookie]
+            
+            return info['imageURL']
+        except:
+            return "https://cloud-4x9tycf9y-hack-club-bot.vercel.app/0transpent.png"
+    def get_goal_price(self):
+        
+        print("shop data", self.shop_data)
+        print("goal cook", self.goal_cookie)
+        try:
+            info = self.shop_data[self.goal_cookie]
+            
+            return info['tickets']
+        except:
+            return "1"
+        
+        
     def check_has_goal(self):
         if self.goal_cookie in self.shop_data:
-            print(self.goal_cookie)
-            print(self.shop_data[self.goal_cookie])
             return True
         else:
             return False
-        print(self.has_goal, "AA")
     
     
     
@@ -113,17 +120,20 @@ class State(rx.State):
     def set_shop_url(self, new_text:str):
         self.shop_url = new_text
     def update_ticket_text(self):
+        self.goal_price = self.get_goal_price()
         self.ticket_text = self.get_balance(self.shop_url_cookie)
         self.goal_name = self.get_goal_name()
+        self.goal_img = self.get_goal_img()
         self.has_goal = self.check_has_goal()
         self.goal_percent = self.get_goal_info()
+        
+        print("goal+price", self.goal_price)
     def update(self):
         self.shop_url_cookie = self.strip_url(self.shop_url)
         self.update_ticket_text()
     
     def get_random_img(self):
         data = self.shop_data
-        print(random.choice(list(data.values()))['imageURL'], "AAAAA")
         return random.choice(list(data.values()))['imageURL']
     random_img_1:str
     random_img_2:str
@@ -133,12 +143,10 @@ class State(rx.State):
         self.update_ticket_text()
     
     def set_goal(self, info):
-        print(info)
         self.goal_cookie = info[0]
         self.update_ticket_text()
         #self.goal_cookie = self.current_goal_choice
     def choose_goal(self, *args):
-        print("ared", args)
         pass
         #self.current_goal_choice = info
     

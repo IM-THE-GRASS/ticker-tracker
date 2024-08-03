@@ -115,6 +115,20 @@ def index():
                 transition={"type": "spring", "stiffness": 400, "damping": 17},
             ),
             motion(
+                rx.image(
+                    src=State.goal_img,
+                    transform="rotate(4deg)",
+                ),
+                width="19.5vw",
+                height="37vh",
+                position="absolute",
+                top="67vh",
+                left="42vw",
+                while_hover={"scale":1.1, "rotate":-4, },
+                while_tap={"scale": 0.9},
+                transition={"type": "spring", "stiffness": 400, "damping": 17},
+            ),
+            motion(
                 rx.center(
                     rx.image(
                         src=State.random_img_1,
